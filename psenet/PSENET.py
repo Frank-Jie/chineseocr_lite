@@ -1,9 +1,9 @@
+import time
+
+import cv2
+import numpy as np
 import torch
 from torchvision import transforms
-import os
-import cv2
-import time
-import numpy as np
 
 from .pse import decode as pse_decode
 
@@ -23,11 +23,8 @@ class PSENetHandel():
         else:
             self.device = torch.device("cpu")
         self.net = torch.load(model_path, map_location=self.device)['state_dict']
-        print('device:', self.device)
-
         # for k in net.state_dict():
         #     print(k)
-
 
         if net is not None:
             # 如果网络计算图和参数是分开保存的，就执行参数加载
@@ -44,7 +41,6 @@ class PSENetHandel():
                 net.load_state_dict(self.net)
 
             self.net = net
-            print('load model')
         self.net.eval()
 
     #
@@ -86,6 +82,7 @@ class PSENetHandel():
         #
 
         img = img.astype(np.float32)
+        # 采用 imgnet 数据 归一化
         img /= 255.0
         img -= np.array((0.485, 0.456, 0.406))
         img /= np.array((0.229, 0.224, 0.225))
@@ -95,24 +92,23 @@ class PSENetHandel():
         with torch.no_grad():
             # torch.cuda.synchronize()
             start = time.time()
-            preds = self.net(tensor)
+            preds = self.net(tensor)  # (n,6,960,480)
 
-            preds, boxes_list,rects  =  pse_decode(preds[0], self.scale)
+            preds, boxes_list, rects = pse_decode(preds[0], self.scale)
 
             scale = (preds.shape[1] / w, preds.shape[0] / h)
-            # print(scale)
-            # preds, boxes_list = decode(preds,num_pred=-1)
-            rects_re = [] #degree, w, h, cx, cy
+
+            rects_re = []  # degree, w, h, cx, cy
             if len(boxes_list):
                 boxes_list = boxes_list / scale
                 for rect in rects:
                     temp_rec = []
                     temp_rec.append(rect[-1])
-                    temp_rec.append(rect[1][1] / scale[0] )
-                    temp_rec.append(rect[1][0] / scale[1] )
-                    temp_rec.append(rect[0][0] / scale[0] )
-                    temp_rec.append(rect[0][1] / scale[1] )
+                    temp_rec.append(rect[1][1] / scale[0])
+                    temp_rec.append(rect[1][0] / scale[1])
+                    temp_rec.append(rect[0][0] / scale[0])
+                    temp_rec.append(rect[0][1] / scale[1])
                     rects_re.append(temp_rec)
             # torch.cuda.synchronize()
             t = time.time() - start
-        return preds, boxes_list,rects_re, t
+        return preds, boxes_list, rects_re, t

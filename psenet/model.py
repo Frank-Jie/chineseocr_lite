@@ -1,6 +1,4 @@
 # -*- coding: utf-8 -*-
-# @Time    : 2019/1/2 17:29
-# @Author  : zhoujun
 import torch
 from torch import nn
 import torch.nn.functional as F
@@ -117,18 +115,3 @@ class PSENet(nn.Module):
 
         return p2 + p3 + p4 + p5
 
-
-
-if __name__ == '__main__':
-    import time
-
-    device = torch.device('cpu')
-    backbone = 'shufflenetv2'
-    net = PSENet(backbone=backbone, pretrained=False, result_num=6).to(device)
-    net.eval()
-    x = torch.zeros(1, 3, 512, 512).to(device)
-    start = time.time()
-    y = net(x)
-    print(time.time() - start)
-    print(y.shape)
-    # torch.save(net.state_dict(),f'{backbone}.pth')

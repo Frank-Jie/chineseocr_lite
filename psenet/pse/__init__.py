@@ -3,6 +3,7 @@ import os
 import numpy as np
 import cv2
 import torch
+from config import score_threshold,min_pic_size
 
 BASE_DIR = os.path.dirname(os.path.realpath(__file__))
 
@@ -49,32 +50,31 @@ def decode(preds, scale,
     :param threshold: sigmoid的阈值
     :return: 最后的输出图和文本框
     """
+
     if not no_sigmode:
         preds = torch.sigmoid(preds)
         preds = preds.detach().cpu().numpy()
 
-
     score = preds[-1].astype(np.float32)
-
     preds = preds > threshold
-    # preds = preds * preds[-1] # 使用最大的kernel作为其他小图的mask,不使用的话效果更好
 
+    # pse_warpper转换成了类别
     pred, label_values = pse_warpper(preds, 5)
-
+    #  pred shape (960*480) | label_values:类1,2,3,4,5...
     bbox_list = []
     rects = []
+
     for label_value in label_values:
         points = np.array(np.where(pred == label_value)).transpose((1, 0))[:, ::-1]
-
-        if points.shape[0] < 800 / (scale * scale):
+        if points.shape[0] < min_pic_size / (scale * scale):
             continue
 
         score_i = np.mean(score[pred == label_value])
-        if score_i < 0.93:
+        if score_i < score_threshold:
             continue
-
+        #
         rect = cv2.minAreaRect(points)
-
+        center = rect[0]
         bbox = cv2.boxPoints(rect)
 
         bbox_list.append([bbox[1], bbox[2], bbox[3], bbox[0]])

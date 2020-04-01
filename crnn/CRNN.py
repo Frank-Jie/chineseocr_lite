@@ -28,7 +28,6 @@ class CRNNHandle():
         else:
             self.device = torch.device("cpu")
         self.net = torch.load(model_path, map_location=self.device)
-        print('device:', self.device)
 
         if net is not None:
             # 如果网络计算图和参数是分开保存的，就执行参数加载
@@ -64,12 +63,12 @@ class CRNNHandle():
 
         image = transformer(image)
         image = image.to(self.device)
+        # view = resize in numpy
         image = image.view(1, *image.size())
         image = Variable(image)
         preds = self.net(image)
- 
+        #(k,1,5530)
         _, preds = preds.max(2)
-
         preds = preds.transpose(1, 0).contiguous().view(-1)
         preds_size = Variable(torch.IntTensor([preds.size(0)]))
         sim_pred = converter.decode(preds.data, preds_size.data, raw=False)
