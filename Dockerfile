@@ -12,6 +12,7 @@ RUN pip install --upgrade pip \
     && pip install  -r requirements.txt
 
 EXPOSE 666
+VOLUME  /TMach_source/Pacific:/app/Pacific
 CMD python app.py
 
 
