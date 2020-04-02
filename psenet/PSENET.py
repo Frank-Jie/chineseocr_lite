@@ -4,7 +4,7 @@ import cv2
 import numpy as np
 import torch
 from torchvision import transforms
-
+from config import *
 from .pse import decode as pse_decode
 
 
@@ -104,8 +104,8 @@ class PSENetHandel():
                 for rect in rects:
                     temp_rec = []
                     temp_rec.append(rect[-1])
-                    temp_rec.append(rect[1][1] / scale[0])
-                    temp_rec.append(rect[1][0] / scale[1])
+                    temp_rec.append(rect[1][1] / scale[0]+offset_w)
+                    temp_rec.append(rect[1][0] / scale[1]+offset_h)
                     temp_rec.append(rect[0][0] / scale[0])
                     temp_rec.append(rect[0][1] / scale[1])
                     rects_re.append(temp_rec)

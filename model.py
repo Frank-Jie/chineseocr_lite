@@ -43,7 +43,7 @@ def crnnRec(im, rects_re):
         simPred = crnn_handle.predict(partImg_)  ##识别的文本
 
         if simPred.strip() != u'':
-            results.append({'cx': cx, 'cy': cy, 'text': simPred})
+            results.append({'cx': round(cx,2), 'cy': round(cy,2), 'text': simPred})
     return results
 
 

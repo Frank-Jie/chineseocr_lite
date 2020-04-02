@@ -6,6 +6,11 @@
 3.使用redis 作为MQ 在实际项目中作为主要接收途径。
 4.同时使用flask作为其他接口。
 
-使用pytouch 1.4
+使用版本：
+pytorch 1.4.0
+torchvision 0.5.0
+cuda 10.1
+cudnn 7.6.4
+
 
 

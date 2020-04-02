@@ -2,7 +2,8 @@ import os
 
 filt_path = os.path.abspath(__file__)
 father_path = os.path.abspath(os.path.dirname(filt_path) + os.path.sep + ".")
-
+offset_w = 3
+offset_h = 3
 min_pic_size = 400
 score_threshold = 0.7
 GPU_ID = None
