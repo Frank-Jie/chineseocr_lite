@@ -35,3 +35,10 @@ result_key_name = 'result_set_table'
 image_key_name = 'img_string_table'
 ip = "localhost"
 TIMEOUT = 30
+
+REDIS_PASSWORD = 123456
+IP = "localhost"
+PORT = 5000
+REDIS_IP = "127.0.0.1"
+
+flag = True

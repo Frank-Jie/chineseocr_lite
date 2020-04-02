@@ -4,12 +4,12 @@ from flask import Flask, request, jsonify
 from concurrent.futures import ThreadPoolExecutor
 from model import text_predict
 from redisMQ.redisbase import redisDataBase
-
+from config import *
 
 app = Flask(__name__)
 redis_mq = redisDataBase()
 
-flag = True
+
 @app.route("/ocr", methods=["POST"])
 def ocr():
     if flag == False:
@@ -35,8 +35,7 @@ def ocr_identify(image_path):
         flag = True
 
 
-
-# ThreadPoolExecutor().submit(redis_mq.listen_task, ocr_identify)
-# ThreadPoolExecutor().submit(redis_mq._ping)
-
-app.run()
+executer = ThreadPoolExecutor()
+executer.submit(redis_mq.listen_task, ocr_identify)
+executer.submit(redis_mq._ping)
+app.run(host=IP,port=PORT)
