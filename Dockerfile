@@ -8,11 +8,11 @@ WORKDIR /app/ocr
 
 RUN ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && echo 'Asia/Shanghai' >/etc/timezone
 
-RUN pip install --upgrade pip \
-    && pip install  -r requirements.txt
+RUN pip install --upgrade pip \&& pip install  -r requirements.txt
 
-EXPOSE 666
-VOLUME  /TMach_source/Pacific:/app/Pacific
-CMD python app.py
+
+ENTRYPOINT ["/home/angelreef/coral_ocr/start.sh"]
+
+
 
 

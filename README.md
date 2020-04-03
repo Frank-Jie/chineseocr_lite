@@ -12,5 +12,8 @@ torchvision 0.5.0
 cuda 10.1
 cudnn 7.6.4
 
+4.3更新
+使用gunicorn+flask+celery做排队
+
 
 
