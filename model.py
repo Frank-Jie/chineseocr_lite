@@ -20,7 +20,6 @@ assert crnn_type is not None
 crnn_handle = CRNNHandle(crnn_model_path, crnn_net, gpu_id=GPU_ID)
 
 
-
 def crnnRec(im, rects_re):
     """
     crnn模型，ocr识别
@@ -43,15 +42,14 @@ def crnnRec(im, rects_re):
         simPred = crnn_handle.predict(partImg_)  ##识别的文本
 
         if simPred.strip() != u'':
-            results.append({'cx': round(cx,2), 'cy': round(cy,2), 'text': simPred})
+            results.append({'cx': round(cx, 2), 'cy': round(cy, 2), 'text': simPred})
     return results
 
 
 def text_predict(img):
-    preds, boxes_list, rects_re, t = text_handle.predict(img, long_size=pse_long_size)
-    result =  crnnRec(np.array(img), rects_re)
+    rects_re = text_handle.predict(img, long_size=pse_long_size)
+    result = crnnRec(np.array(img), rects_re)
     return {"status": "success", "result_list": result}
-
 
 
 if __name__ == "__main__":

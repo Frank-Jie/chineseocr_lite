@@ -12,8 +12,13 @@ torchvision 0.5.0
 cuda 10.1
 cudnn 7.6.4
 
-4.3更新
-使用gunicorn+flask+celery做排队
+4.7日更新
+针对识别文字有偏旁缺失问题，修改了psnet回归b-box结果x，y值
+针对opencv 对rgba通道的异常进行处理
 
+4.10 更新
+gunicorn只用单线程
 
-
+4.15 更新
+去掉boxrect过程
+缩小input到80%

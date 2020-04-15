@@ -91,16 +91,14 @@ class PSENetHandel():
         tensor = tensor.to(self.device)
         with torch.no_grad():
             # torch.cuda.synchronize()
-            start = time.time()
             preds = self.net(tensor)  # (n,6,960,480)
 
-            preds, boxes_list, rects = pse_decode(preds[0], self.scale)
+            preds,rects = pse_decode(preds[0], self.scale)
 
             scale = (preds.shape[1] / w, preds.shape[0] / h)
 
             rects_re = []  # degree, w, h, cx, cy
-            if len(boxes_list):
-                boxes_list = boxes_list / scale
+            if len(rects):
                 for rect in rects:
                     temp_rec = []
                     temp_rec.append(rect[-1])
@@ -110,5 +108,4 @@ class PSENetHandel():
                     temp_rec.append(rect[0][1] / scale[1])
                     rects_re.append(temp_rec)
             # torch.cuda.synchronize()
-            t = time.time() - start
-        return preds, boxes_list, rects_re, t
+        return rects_re

@@ -4,12 +4,12 @@ filt_path = os.path.abspath(__file__)
 father_path = os.path.abspath(os.path.dirname(filt_path) + os.path.sep + ".")
 offset_w = 3
 offset_h = 3
-min_pic_size = 400
+min_pic_size = 150
 score_threshold = 0.7
 GPU_ID = None
 
 # psenet相关
-pse_long_size = 960  # 图片长边
+pse_long_size = 768  # 图片长边
 pse_model_type = "mobilenetv2"
 pse_scale = 1
 pse_model_path = os.path.join(father_path, "models/psenet_lite_mbv2.pth")
@@ -33,12 +33,9 @@ elif crnn_type == "full_dense":
 job_list_key_name = 'job_list_table'
 result_key_name = 'result_set_table'
 image_key_name = 'img_string_table'
-ip = "localhost"
-TIMEOUT = 30
+
 
 REDIS_PASSWORD = 123456
-IP = "localhost"
-PORT = 5000
-REDIS_IP = "127.0.0.1"
+REDIS_IP = "172.19.0.3"
 
 flag = True

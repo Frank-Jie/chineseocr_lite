@@ -72,12 +72,7 @@ def decode(preds, scale,
         score_i = np.mean(score[pred == label_value])
         if score_i < score_threshold:
             continue
-        #
         rect = cv2.minAreaRect(points)
-        center = rect[0]
-        bbox = cv2.boxPoints(rect)
-
-        bbox_list.append([bbox[1], bbox[2], bbox[3], bbox[0]])
         rects.append(rect)
 
-    return pred, np.array(bbox_list),rects
+    return pred,rects

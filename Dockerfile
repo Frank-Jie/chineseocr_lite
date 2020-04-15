@@ -1,17 +1,17 @@
 
-FROM python:3.6
+FROM python:3.7
 
 ENV PYTHONUNBUFFERED 1
 
-COPY . /app/ocr
-WORKDIR /app/ocr
+COPY . /app/coral_ocr
+WORKDIR /app/coral_ocr
 
 RUN ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && echo 'Asia/Shanghai' >/etc/timezone
 
-RUN pip install --upgrade pip \&& pip install  -r requirements.txt
+RUN pip install --upgrade pip && pip install  -r requirements.txt
 
 
-ENTRYPOINT ["/home/angelreef/coral_ocr/start.sh"]
+ENTRYPOINT ["gunicorn","-c", "gunicorn.py", "app:app"]
 
 
 

@@ -1,6 +1,5 @@
-import gevent.monkey
+
 import os
-gevent.monkey.patch_all()
 
 
 
@@ -16,6 +15,5 @@ errorlog = 'log/error.log'
 accesslog = 'log/access.log'
 
 workers = 1  # 预设2个
-worker_class = 'gunicorn.workers.ggevent.GeventWorker'
 
 x_forwarded_for_header = 'X-FORWARDED-FOR'

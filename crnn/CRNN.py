@@ -1,20 +1,15 @@
 import torch
-from torchvision import transforms
-import os
-import cv2
-import time
-import numpy as np
-# alphabetfrom .keys import alphabet
-from .keys import alphabetChinese as alphabet
 from torch.autograd import Variable
 
-from .util import strLabelConverter,resizeNormalize
-
+# alphabetfrom .keys import alphabet
+from .keys import alphabetChinese as alphabet
+from .util import strLabelConverter, resizeNormalize
 
 converter = strLabelConverter(''.join(alphabet))
 
+
 class CRNNHandle():
-    def __init__(self,model_path , net , gpu_id=None ):
+    def __init__(self, model_path, net, gpu_id=None):
         '''
            初始化pytorch模型
            :param model_path: 模型地址(可以是模型的参数或者参数和计算图一起保存的文件)
@@ -36,8 +31,7 @@ class CRNNHandle():
             try:
                 sk = {}
                 for k in self.net:
-
-                    sk[k.replace("module.","")] = self.net[k]
+                    sk[k.replace("module.", "")] = self.net[k]
                     # sk[k[7:]] = self.net[k]
 
                 net.load_state_dict(sk)
@@ -48,8 +42,6 @@ class CRNNHandle():
             self.net = net
             print('load model')
         self.net.eval()
-
-
 
     def predict(self, im):
         """
@@ -67,12 +59,9 @@ class CRNNHandle():
         image = image.view(1, *image.size())
         image = Variable(image)
         preds = self.net(image)
-        #(k,1,5530)
+        # (k,1,5530)
         _, preds = preds.max(2)
         preds = preds.transpose(1, 0).contiguous().view(-1)
         preds_size = Variable(torch.IntTensor([preds.size(0)]))
         sim_pred = converter.decode(preds.data, preds_size.data, raw=False)
         return sim_pred
-
-
-
